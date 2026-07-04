@@ -4,7 +4,7 @@
 
 # 🦅 FluxState Edge SDK
 
-**Zero-Trace Contextual Edge Video Analytics for Enterprise Security**
+**Privacy-Preserving Contextual Edge Video Analytics for Enterprise Security**
 
 [![PyPI version](https://img.shields.io/pypi/v/fluxstate-edge.svg?style=for-the-badge&color=2e2e2e)](https://pypi.org/project/fluxstate-edge/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge&color=2e2e2e)](https://opensource.org/licenses/MIT)
@@ -26,7 +26,7 @@
 | :--- | :--- |
 | 🧠 **Agentic VLM Reasoner** | Runs Vision-Language Models (e.g., `Qwen2.5-VL`) locally via MLX on Apple Silicon unified memory for deep contextual scene understanding. Bypasses cloud APIs entirely. |
 | 🎯 **Tactical Visual Grounding** | Automatically injects high-contrast red bounding boxes over anomalies, forcing the VLM to classify threats with pinpoint accuracy and zero hallucination. |
-| 🛡️ **Memory Mitigation** | Uses `ctypes.memset` to manually zero out numpy array pixel buffers at the C-level instantly after inference, preventing image retention in the Python heap. |
+| 🛡️ **Privacy-by-Design** | Actively zeroes out image buffers post-inference via C-level `memset` to ensure GDPR/HIPAA compliance and prevent sensitive pixel data from lingering in the system heap. |
 | 🗄️ **Temporal Forensics** | Behavioral anomalies are serialized into a local SQLite database (`core/forensics.py`), creating a searchable text-based ledger of physical events. |
 | 📹 **Hardware Agnostic** | Ingests existing IP cameras via standard RTSP URLs. No proprietary recording hardware required. |
 | 🐳 **Edge Containerization** | Ships with a highly optimized `Dockerfile` for enterprise edge deployments (Kubernetes/Docker Swarm), permanently locking native OS dependencies. |

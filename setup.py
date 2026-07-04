@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="fluxstate-edge",
     version="1.3.1",
-    description="Zero-Trace Contextual Edge Video Analytics SDK",
+    description="Privacy-Preserving Contextual Edge Video Analytics SDK",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author="FluxState Security Architecture",
