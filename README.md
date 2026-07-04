@@ -41,7 +41,7 @@ See the SDK installation and verification in under a minute.
 | 🧠 **Agentic VLM Reasoner** | Runs Vision-Language Models (e.g., `Qwen2.5-VL`) locally via MLX on Apple Silicon unified memory for deep contextual scene understanding. Bypasses cloud APIs entirely. |
 | 🎯 **Tactical Visual Grounding** | Automatically injects high-contrast red bounding boxes over anomalies. This guides the VLM toward the detected region, reducing irrelevant reasoning and improving contextual grounding. |
 | 🛡️ **Privacy-by-Design** | Actively zeroes out image buffers post-inference via C-level `memset`. Designed with privacy-first principles to prevent sensitive pixel data from lingering in the system heap. |
-| 🗄️ **Temporal Forensics** | Behavioral anomalies are serialized into a local SQLite database (`core/forensics.py`), creating a searchable text-based ledger of physical events. |
+| 🗄️ **Temporal Forensics** | Behavioral anomalies are serialized into a local SQLite database (`fluxstate_edge/core/forensics.py`), creating a searchable text-based ledger of physical events. |
 | 📹 **Hardware Agnostic** | Ingests existing IP cameras via standard RTSP URLs. No proprietary recording hardware required. |
 | 🐳 **Edge Containerization** | Ships with a highly optimized `Dockerfile` for enterprise edge deployments (Kubernetes/Docker Swarm), permanently locking native OS dependencies. |
 
@@ -133,7 +133,6 @@ pytest tests/
 ---
 
 <div align="center">
-  <b>⭐ <a href="https://github.com/iamrealvinnu/fluxstate">GitHub Repository</a></b> • 
   <b>📦 <a href="https://pypi.org/project/fluxstate-edge/">PyPI Package</a></b> • 
   <b>📖 <a href="architecture.md">Documentation</a></b>
 </div>
