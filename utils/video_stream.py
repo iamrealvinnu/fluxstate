@@ -25,7 +25,7 @@ try:
     AUDIO_AVAILABLE = True
 except ImportError:
     AUDIO_AVAILABLE = False
-    print("[System] PyAudio not found. Acoustic Environmental Sensing operating in mock mode.")
+    print("[System] PyAudio not found. Acoustic Environmental Sensing operating in degraded passive mode.")
 
 def generate_gpass_token(crop):
     """

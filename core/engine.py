@@ -33,7 +33,7 @@ class FluxInferenceEngine:
         """
         time.sleep(0.05) # Simulate inference latency
         
-        # Hot-reload NATGRID Policy
+        # Hot-reload Intelligence Policy
         policy = self._load_policy()
         vectors = policy.get("THREAT_VECTORS", {})
         
