@@ -9,6 +9,8 @@
 
 ## 🖼️ Architecture & Use Cases
 
+![FluxState Architecture Diagram](assets/fluxstate_architectural_diagram.png)
+
 ![Use Cases](assets/fluxstate_usecases.png)
 
 ---
