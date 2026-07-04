@@ -9,11 +9,11 @@ import ctypes
 import numpy as np
 import datetime
 from collections import defaultdict, deque
-from utils.video_stream import EdgeVideoStream
-from core.state_manager import RealityGraph, IntelligenceState
-from core.engine import FluxInferenceEngine
-from core.forensics import ForensicDatabase
-from core.agent import SemanticAgent
+from .utils.video_stream import EdgeVideoStream
+from .core.state_manager import RealityGraph, IntelligenceState
+from .core.engine import FluxInferenceEngine
+from .core.forensics import ForensicDatabase
+from .core.agent import SemanticAgent
 
 class PhysicsTracker:
     def __init__(self, history_frames=10):
@@ -44,7 +44,9 @@ class FluxStateNode:
     def __init__(self, stream_source=None):
         import json
         try:
-            with open("intelligence_policy.json", "r") as f:
+            import os
+            policy_path = os.path.join(os.path.dirname(__file__), "intelligence_policy.json")
+            with open(policy_path, "r") as f:
                 self.policy = json.load(f)
         except:
             self.policy = {}

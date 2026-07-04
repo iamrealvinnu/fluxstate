@@ -2,13 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name="fluxstate-edge",
-    version="1.3.1",
+    version="1.3.2",
     description="Privacy-Preserving Contextual Edge Video Analytics SDK",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author="FluxState Security Architecture",
     packages=find_packages(),
-    py_modules=["app", "config"],
+    package_data={"fluxstate_edge": ["*.json"]},
+    include_package_data=True,
     install_requires=[
         "opencv-python>=4.8.0",
         "numpy>=1.24.0",

@@ -3,7 +3,7 @@ import os
 import json
 import sqlite3
 import time
-from core.forensics import ForensicDatabase
+from fluxstate_edge.core.forensics import ForensicDatabase
 
 def test_forensics_database_initialization():
     """Test that the SQLite database is created properly."""
@@ -45,8 +45,9 @@ def test_forensics_logging():
 
 def test_intelligence_policy_loading():
     """Test that intelligence_policy.json is valid JSON."""
-    assert os.path.exists("intelligence_policy.json"), "Policy file missing"
-    with open("intelligence_policy.json", "r") as f:
+    policy_path = os.path.join(os.path.dirname(__file__), "..", "fluxstate_edge", "intelligence_policy.json")
+    assert os.path.exists(policy_path), "Policy file missing"
+    with open(policy_path, "r") as f:
         data = json.load(f)
         assert "THREAT_VECTORS" in data, "Policy missing THREAT_VECTORS"
         assert "NODE_ID" in data, "Policy missing NODE_ID"

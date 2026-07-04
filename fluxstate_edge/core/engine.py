@@ -19,7 +19,9 @@ class FluxInferenceEngine:
         
     def _load_policy(self):
         try:
-            with open("intelligence_policy.json", "r") as f:
+            import os
+            policy_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "intelligence_policy.json")
+            with open(policy_path, "r") as f:
                 return json.load(f)
         except Exception:
             return {}

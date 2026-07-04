@@ -63,7 +63,7 @@ FluxState is designed to fade into the background. Drop it into your existing ba
 
 ```python
 import time
-from app import FluxStateNode
+from fluxstate_edge import FluxStateNode
 
 # 1. Initialize the SDK
 sdk = FluxStateNode()
