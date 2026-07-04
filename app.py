@@ -9,7 +9,6 @@ import ctypes
 import numpy as np
 import datetime
 from collections import defaultdict, deque
-from config import AppConfig
 from utils.video_stream import EdgeVideoStream
 from core.state_manager import RealityGraph, IntelligenceState
 from core.engine import FluxInferenceEngine
@@ -181,7 +180,7 @@ class FluxStateNode:
         Runs the full 3D Holographic MVP UI on the local machine for demonstration purposes.
         """
         print(f"==================================================")
-        print(f" Starting {AppConfig.PROJECT_NAME} Edge Node (Debug UI) ")
+        print(f" Starting FluxState Edge Node (Debug UI) ")
         print(f"==================================================")
         try:
             while True:

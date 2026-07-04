@@ -2,7 +2,6 @@
 import time
 import json
 import os
-from config import AppConfig
 
 try:
     import mlx.core as mx
@@ -17,7 +16,6 @@ class FluxInferenceEngine:
     """
     def __init__(self):
         print(f"[Engine] Initializing local backend on Apple Silicon...")
-        self.model_path = AppConfig.VISION_MODEL_PATH
         
     def _load_policy(self):
         try:
