@@ -1,6 +1,6 @@
 # FluxState: Edge Intelligence SDK
 
-[![PyPI version](https://badge.fury.io/py/fluxstate-edge.svg)](https://badge.fury.io/py/fluxstate-edge)
+[![PyPI version](https://img.shields.io/pypi/v/fluxstate-edge.svg)](https://pypi.org/project/fluxstate-edge/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests: Passing](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)]()
 
