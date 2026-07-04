@@ -20,6 +20,20 @@
 
 <br>
 
+## 🚀 Quick Install
+
+```bash
+pip install fluxstate-edge
+```
+
+## 🎥 Installation Demo
+
+See the SDK installation and verification in under a minute.
+
+▶️ [Watch Installation Demo (Google Drive)](https://drive.google.com/file/d/1wf4hSMkGXe3q5MOipx87nfwzQis2_Xcf/view?usp=sharing)
+
+<br>
+
 ## ⚡ System Capabilities
 
 | Capability | Technical Implementation |
