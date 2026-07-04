@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="fluxstate-edge",
-    version="1.0.0-production",
+    version="1.0.0",
     description="Zero-Trace Contextual Edge Video Analytics SDK",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
