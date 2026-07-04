@@ -11,7 +11,6 @@ import hashlib
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from config import AppConfig
 
 try:
     from ultralytics import YOLO
@@ -276,7 +275,7 @@ class EdgeVideoStream:
         
         entropy_score = np.mean(frame_delta) / 255.0
         self.last_frame = gray_resized
-        should_process = entropy_score > AppConfig.ENTROPY_THRESHOLD or len(movement_boxes) > 0
+        should_process = entropy_score > 0.15 or len(movement_boxes) > 0
 
         detected_objects = []
         yolo_boxes = []

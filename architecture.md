@@ -31,7 +31,14 @@ Instead of saving heavy video files to disk, FluxState saves the semantic output
 - This creates a searchable text-based ledger of all physical events.
 - Operators can perform fast SQL queries or keyword searches (e.g., finding specific actions or anomalies) across months of historical data.
 
-## 5. C-Level Memory Mitigation
+## 5. Agentic VLM Reasoner (Vision-Language Orchestration)
+*(Handled by `SemanticAgent` in `core/agent.py`)*
+
+To achieve deep scene understanding, FluxState implements an Agentic Reasoning bridge.
+- The `SemanticAgent` intercepts flagged SQLite events, encodes the raw spatial frame to Base64, and prompts a Vision-Language Model (e.g., Qwen2.5-VL) to analyze the anomaly.
+- It also enables Natural Language querying against the temporal database, allowing operators to ask: *"What happened between 2 PM and 3 PM?"*
+
+## 6. C-Level Memory Mitigation
 *(Handled in the `poll_telemetry` loop in `app.py`)*
 
 To address data-retention concerns, the system attempts to clear images from RAM as quickly as possible.
@@ -39,7 +46,12 @@ To address data-retention concerns, the system attempts to clear images from RAM
 - To mitigate this, FluxState utilizes `ctypes.memset` to manually overwrite the underlying C-level memory buffer of the numpy image array with zeros immediately after inference is complete.
 - *Note: This mitigates lingering Python heap data, but does not prevent the OS, camera firmware, or GPU drivers from maintaining their own underlying buffers.*
 
-## 6. Integration Webhooks
+## 7. Integration Webhooks
 *(Handled by `_push_to_integration_bus` in `app.py`)*
 
 When an anomaly surpasses the defined thresholds, the SDK can instantly fire an HTTP `POST` request to the client's proprietary Video Management System (VMS) webhook. The payload contains the full JSON telemetry, allowing the client to log the event in their own systems.
+
+## 8. Containerized Deployment
+*(Handled by `Dockerfile`)*
+
+FluxState is packaged as an edge-ready container. This guarantees native C++ dependencies (Tesseract OCR, PortAudio) are perfectly locked, bypassing OS-level package manager constraints and enabling immediate deployment on Kubernetes or Docker Swarm.
