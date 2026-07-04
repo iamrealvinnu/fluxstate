@@ -1,8 +1,5 @@
 # FluxState: Edge Intelligence SDK
 
-[![PyPI version](https://img.shields.io/pypi/v/fluxstate-edge.svg)](https://pypi.org/project/fluxstate-edge/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests: Passing](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)]()
 
 **FluxState Edge** is an extensible, camera-agnostic video analytics SDK designed for integration into enterprise security backends. It processes RTSP streams locally on the edge, extracting behavioral metadata using a combination of object detection, 3D skeletal posing, audio processing, and VLM (Vision-Language Model) semantic reasoning.
 
