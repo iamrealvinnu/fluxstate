@@ -35,7 +35,9 @@ Instead of saving heavy video files to disk, FluxState saves the semantic output
 *(Handled by `SemanticAgent` in `core/agent.py`)*
 
 To achieve deep scene understanding, FluxState implements an Agentic Reasoning bridge.
-- The `SemanticAgent` intercepts flagged SQLite events, encodes the raw spatial frame to Base64, and prompts a Vision-Language Model (e.g., Qwen2.5-VL) to analyze the anomaly.
+- The `SemanticAgent` intercepts flagged SQLite events and executes inference locally using the **MLX framework directly on Apple Silicon unified memory**, removing the need for cloud API calls.
+- **Visual Grounding:** To enhance small-model fidelity (e.g., Qwen2.5-VL-3B), the engine draws high-contrast red bounding boxes around anomalies before VLM inference. This forces the model to focus exclusively on target pixels, preventing hallucinations.
+- **Tactical Threat Analysis:** The VLM operates using highly structured OSINT/Tactical prompts, strictly ruling out civilian objects and evaluating kinetic threat indicators without hardcoding biases.
 - It also enables Natural Language querying against the temporal database, allowing operators to ask: *"What happened between 2 PM and 3 PM?"*
 
 ## 6. C-Level Memory Mitigation

@@ -13,6 +13,7 @@ from utils.video_stream import EdgeVideoStream
 from core.state_manager import RealityGraph, IntelligenceState
 from core.engine import FluxInferenceEngine
 from core.forensics import ForensicDatabase
+from core.agent import SemanticAgent
 
 class PhysicsTracker:
     def __init__(self, history_frames=10):
@@ -60,6 +61,7 @@ class FluxStateNode:
         self.ai_engine = FluxInferenceEngine()
         self.physics_tracker = PhysicsTracker()
         self.forensics = ForensicDatabase()
+        self.agent = SemanticAgent()
         
         # Seamless SDK Integration Hooks
         self.on_threat_detected = None
@@ -124,6 +126,27 @@ class FluxStateNode:
             context = self.ai_engine.generate_context_reasoning(detected_objects, movement_boxes, action, rf_count, acoustic)
             self.graph.log_event(context)
             telemetry["context_log"] = context
+            
+            # --- VLM AGENT INTERCEPTION ---
+            if "THREAT VECTOR" in context or "ANOMALY" in context.upper():
+                # Annotate frame to give the VLM explicit visual targeting
+                vlm_frame = frame.copy()
+                for (x, y, bw, bh, label, conf, obj_id) in detected_objects:
+                    if "person" not in label.lower():
+                        cv2.rectangle(vlm_frame, (x, y), (x + bw, y + bh), (0, 0, 255), 3)
+                        cv2.putText(vlm_frame, "TARGET ANOMALY", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+                
+                prompt = (
+                    "Initiate Priority Threat Assessment. FOCUS YOUR ATTENTION EXCLUSIVELY ON THE OBJECT(S) OUTLINED IN RED BOUNDING BOXES. "
+                    "Perform a high-fidelity visual inspection of the pixels inside the red boundaries. "
+                    "Determine if the bounded object represents a tactical threat, such as an improvised weapon, firearm, explosive, or hostile instrument. "
+                    "Rule out harmless civilian electronics or everyday objects based on visual evidence. "
+                    "Provide a definitive classification of the anomaly and assess the immediate tactical risk."
+                )
+                vlm_reasoning = self.agent.investigate_scene(context, vlm_frame, prompt=prompt)
+                telemetry["vlm_reasoning"] = vlm_reasoning
+                print(f"[VLM Reasoner] {vlm_reasoning}")
+                
             self._push_to_integration_bus(telemetry)
             self.forensics.log_event(telemetry)
             

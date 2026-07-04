@@ -11,7 +11,8 @@
 ## 🚀 Core Capabilities
 
 - **Temporal Forensic Database:** Events and behavioral anomalies are logged directly into a local SQLite database (`core/forensics.py`). This creates a searchable text-based ledger of physical events.
-- **Agentic VLM Reasoner (Preview):** The architecture includes scaffolding (`core/agent.py`) to pass complex spatial events to Vision-Language Models (e.g., Qwen2.5-VL) for deep contextual scene understanding.
+- **Agentic VLM Reasoner:** The architecture intercepts complex spatial events and runs Vision-Language Models (e.g., Qwen2.5-VL) locally via MLX on Apple Silicon unified memory for deep contextual scene understanding.
+- **Tactical Visual Grounding:** Automatically draws explicit red bounding boxes on target anomalies and utilizes strict, unbiased OSINT prompts to force the VLM to classify threats with pinpoint accuracy.
 - **C-Level Memory Mitigation:** FluxState uses `ctypes.memset` to manually zero out numpy array pixel buffers at the C-level immediately after inference to mitigate image retention in the Python heap.
 - **Hardware Agnostic (RTSP):** Connects to existing IP cameras via standard RTSP URLs without requiring proprietary recording hardware.
 - **Containerized Edge Deployment:** Includes a highly optimized `Dockerfile` for enterprise edge deployments (e.g., Kubernetes/Docker Swarm), solving native OS dependencies.

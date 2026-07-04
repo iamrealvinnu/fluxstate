@@ -30,3 +30,4 @@ run.py
 test_ledger.db
 test_ledger_log.db
 swarm_ledger.db
+*.pt
