@@ -1,40 +1,45 @@
 # FluxState SDK Architecture Overview
 
-FluxState operates as a **Camera-Agnostic Intelligent Video Recorder (IVR)**. It discards the legacy "dumb camera" paradigm in favor of a layered, multi-modal semantic reasoning architecture designed specifically for headless B2B enterprise deployments.
+FluxState operates as a **Camera-Agnostic Intelligent Video Recorder (IVR)**. It ingests video from existing infrastructure and processes it through a layered inference pipeline to generate semantic metadata.
 
-## 1. Zero-Latency Ingestion Layer (RTSP & Local)
+## 1. Ingestion Layer (RTSP & Local)
 *(Handled by `EdgeVideoStream` in `utils/video_stream.py`)*
 
-To prevent the AI inference loop from causing video buffer lag, camera ingestion is decoupled into a **Daemon Background Thread**. 
-- The thread continuously pulls frames from RTSP streams (IP cameras) or local USB hardware.
-- The inference loop requests `frame.copy()`, guaranteeing a 0ms latency differential between reality and inference.
+To prevent the AI inference loop from bottlenecking due to network latency, camera ingestion is decoupled into a background daemon thread. 
+- The thread continuously pulls frames from RTSP streams or local hardware into a circular buffer.
+- The inference loop requests `frame.copy()`, minimizing the latency differential between capture and processing.
 
-## 2. Multi-Modal Semantic Extraction
-When kinetic energy (motion) is detected, the SDK fires a four-pronged extraction pipeline:
+## 2. Extraction Pipeline
+When sufficient kinetic motion is detected, the SDK fires a parallel extraction pipeline:
 
-- **A. YOLOv8 ByteTrack (Object Semantics)**: `ultralytics` YOLOv8n classifies 80+ objects and assigns a persistent ByteTrack ID to track the object across temporal frames.
-- **B. Mediapipe Tasks API (Kinetic Intent)**: The `PoseLandmarker` extracts 33 3D skeletal joints. Simple limb-geometry heuristics map physical positions into semantic actions (`"ARMS_RAISED"`, `"WALKING"`).
-- **C. PyAudio (Acoustic Impact)**: A background audio daemon calculates RMS volume, classifying anomalies like `KINETIC_IMPACT_OR_SHATTERING` or `VOCAL_ESCALATION`.
-- **D. ARP Scanner (RF Intel)**: Subprocesses ping local subnet routing tables to enumerate active network-emitting payloads carried by physical entities.
+- **A. Object Detection (YOLOv8)**: Classifies general objects and assigns persistent ByteTrack IDs.
+- **B. Skeletal Kinetics (MediaPipe)**: Extracts 33 3D skeletal joints to map physical limb geometry into semantic actions (`"ARMS_RAISED"`, `"WALKING"`).
+- **C. Audio Analysis (PyAudio)**: Calculates RMS volume in a background thread to detect sudden acoustic anomalies.
+- **D. Identity Hashing (GPASS)**: Extracts upper-body geometric crops and hashes them to create anonymous, privacy-compliant tracking IDs across frames.
 
-## 3. The Behavioral Threat Matrix (Reasoning Engine)
+## 3. Inference Engine
 *(Handled by `FluxInferenceEngine` in `core/engine.py`)*
 
-Instead of a binary state machine, telemetry is fed to the `FluxInferenceEngine` and cross-referenced with the OTA (Over-The-Air) `intelligence_policy.json`.
-- It fuses the modes (e.g., if kinetic action == `"ARMS_RAISED"` AND acoustic == `"VOCAL_ESCALATION"`).
-- It generates a natural-language contextual summary and flags threats.
-- It promotes entities to the `SWARM LEDGER` using anonymous GPASS cryptographic hashes, tracking behavior without relying on facial recognition.
+Telemetry from the extraction pipeline is fed to the `FluxInferenceEngine` and cross-referenced with thresholds defined in `intelligence_policy.json`.
+- It fuses the modalities (e.g., matching kinetic action with acoustic volume).
+- It generates a formatted natural-language summary (the `Reality Graph` observation).
 
-## 4. Zero-Trace Privacy Engine
-*(Handled in `poll_telemetry` loop)*
+## 4. Temporal Forensic Memory
+*(Handled by `ForensicDatabase` in `core/forensics.py`)*
 
-Data privacy is the cornerstone of the SDK. FluxState is built to operate under strict GDPR and Defense requirements:
-- **No Data Retention**: The system does not save images or video files to disk.
-- **Cryptographic Memory Wiping**: Immediately after the inference loop extracts the semantic metadata (bounding boxes, GPASS IDs), the SDK executes a `frame.fill(0)` command. This explicitly zeros out the raw pixel array in RAM *before* the Python garbage collector runs, ensuring that malicious actors cannot extract video data via RAM heap dumps.
+Instead of saving heavy video files to disk, FluxState saves the semantic output into a local SQLite database (`swarm_ledger.db`).
+- This creates a searchable text-based ledger of all physical events.
+- Operators can perform fast SQL queries or keyword searches (e.g., finding specific actions or anomalies) across months of historical data.
 
-## 5. Headless Integration Bus (Webhooks)
+## 5. C-Level Memory Mitigation
+*(Handled in the `poll_telemetry` loop in `app.py`)*
+
+To address data-retention concerns, the system attempts to clear images from RAM as quickly as possible.
+- Python's standard garbage collector does not immediately zero out deallocated memory, meaning images can theoretically linger in the heap.
+- To mitigate this, FluxState utilizes `ctypes.memset` to manually overwrite the underlying C-level memory buffer of the numpy image array with zeros immediately after inference is complete.
+- *Note: This mitigates lingering Python heap data, but does not prevent the OS, camera firmware, or GPU drivers from maintaining their own underlying buffers.*
+
+## 6. Integration Webhooks
 *(Handled by `_push_to_integration_bus` in `app.py`)*
 
-FluxState is designed as the "Intel Inside" for enterprise firms. It runs completely silently as a background daemon.
-- When the Threat Matrix flags an anomaly, the SDK instantly fires an HTTP `POST` request to the client's proprietary Video Management System (VMS) webhook.
-- The payload contains the full JSON Reality Graph telemetry, allowing the client to render alerts in their own custom UIs.
+When an anomaly surpasses the defined thresholds, the SDK can instantly fire an HTTP `POST` request to the client's proprietary Video Management System (VMS) webhook. The payload contains the full JSON telemetry, allowing the client to log the event in their own systems.

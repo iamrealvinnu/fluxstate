@@ -2,6 +2,10 @@
 import time
 import sys
 import cv2
+import os
+import json
+import requests
+import ctypes
 import numpy as np
 import datetime
 from collections import defaultdict, deque
@@ -9,6 +13,7 @@ from config import AppConfig
 from utils.video_stream import EdgeVideoStream
 from core.state_manager import RealityGraph, IntelligenceState
 from core.engine import FluxInferenceEngine
+from core.forensics import ForensicDatabase
 
 class PhysicsTracker:
     def __init__(self, history_frames=10):
@@ -55,6 +60,7 @@ class FluxStateNode:
         self.graph = RealityGraph()
         self.ai_engine = FluxInferenceEngine()
         self.physics_tracker = PhysicsTracker()
+        self.forensics = ForensicDatabase()
         
         # Seamless SDK Integration Hooks
         self.on_threat_detected = None
@@ -120,6 +126,7 @@ class FluxStateNode:
             self.graph.log_event(context)
             telemetry["context_log"] = context
             self._push_to_integration_bus(telemetry)
+            self.forensics.log_event(telemetry)
             
             # Fire SDK Hooks
             if self.on_threat_detected and "THREAT VECTOR" in context:
@@ -128,11 +135,12 @@ class FluxStateNode:
         if self.on_telemetry_update:
             self.on_telemetry_update(telemetry)
             
-        # --- ZERO-TRACE PRIVACY ENGINE ---
-        # Cryptographically overwrite raw pixel buffers in memory to 0 before Python GC.
-        # Guarantees compliance with strict Defense/GDPR zero-retention policies against heap dumps.
+        # --- TRUE ZERO-TRACE PRIVACY ENGINE (C-Level Wipe) ---
+        # Honest Engineering: Python GC is unsafe for privacy.
+        # We extract the underlying C memory pointer of the numpy array
+        # and forcefully memset it to 0 before the frame is destroyed.
         if frame is not None:
-            frame.fill(0)
+            ctypes.memset(frame.ctypes.data, 0, frame.nbytes)
             
         return telemetry
         
