@@ -25,8 +25,8 @@
 | Capability | Technical Implementation |
 | :--- | :--- |
 | 🧠 **Agentic VLM Reasoner** | Runs Vision-Language Models (e.g., `Qwen2.5-VL`) locally via MLX on Apple Silicon unified memory for deep contextual scene understanding. Bypasses cloud APIs entirely. |
-| 🎯 **Tactical Visual Grounding** | Automatically injects high-contrast red bounding boxes over anomalies, forcing the VLM to classify threats with pinpoint accuracy and zero hallucination. |
-| 🛡️ **Privacy-by-Design** | Actively zeroes out image buffers post-inference via C-level `memset` to ensure GDPR/HIPAA compliance and prevent sensitive pixel data from lingering in the system heap. |
+| 🎯 **Tactical Visual Grounding** | Automatically injects high-contrast red bounding boxes over anomalies. This guides the VLM toward the detected region, reducing irrelevant reasoning and improving contextual grounding. |
+| 🛡️ **Privacy-by-Design** | Actively zeroes out image buffers post-inference via C-level `memset`. Designed with privacy-first principles to prevent sensitive pixel data from lingering in the system heap. |
 | 🗄️ **Temporal Forensics** | Behavioral anomalies are serialized into a local SQLite database (`core/forensics.py`), creating a searchable text-based ledger of physical events. |
 | 📹 **Hardware Agnostic** | Ingests existing IP cameras via standard RTSP URLs. No proprietary recording hardware required. |
 | 🐳 **Edge Containerization** | Ships with a highly optimized `Dockerfile` for enterprise edge deployments (Kubernetes/Docker Swarm), permanently locking native OS dependencies. |
@@ -43,7 +43,7 @@
 
 <br>
 
-## 🛠️ The 5-Line Integration Hook
+## 🛠️ Minimal SDK Integration
 
 FluxState is designed to fade into the background. Drop it into your existing backend and attach a webhook.
 
@@ -92,12 +92,13 @@ docker run -d --name fluxstate-edge fluxstate-edge
 <br>
 
 ```bash
-# macOS
-brew install tesseract portaudio
-# Linux
-sudo apt-get install tesseract-ocr libportaudio2 libportaudiocpp0 portaudio19-dev
-
 pip install fluxstate-edge
+
+# macOS dependencies
+brew install tesseract portaudio
+
+# Linux dependencies
+sudo apt-get install tesseract-ocr libportaudio2 libportaudiocpp0 portaudio19-dev
 ```
 </details>
 
@@ -113,4 +114,12 @@ pytest tests/
 
 <div align="center">
   <i>For a deeper dive into the threading model, VLM orchestration, and the SQLite schema, see <a href="architecture.md">architecture.md</a>.</i>
+</div>
+
+---
+
+<div align="center">
+  <b>⭐ <a href="https://github.com/iamrealvinnu/fluxstate">GitHub Repository</a></b> • 
+  <b>📦 <a href="https://pypi.org/project/fluxstate-edge/">PyPI Package</a></b> • 
+  <b>📖 <a href="architecture.md">Documentation</a></b>
 </div>
