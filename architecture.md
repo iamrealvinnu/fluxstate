@@ -1,5 +1,6 @@
 # FluxState SDK Architecture Overview
 
+![FluxState Architecture Diagram](assets/fluxstate_architectural_diagram.png)
 FluxState operates as a **Camera-Agnostic Intelligent Video Recorder (IVR)**. It ingests video from existing infrastructure and processes it through a layered inference pipeline to generate semantic metadata.
 
 ## 1. Ingestion Layer (RTSP & Local)

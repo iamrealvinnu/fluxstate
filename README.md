@@ -1,7 +1,15 @@
 # FluxState: Edge Intelligence SDK
 
 
+![FluxState Edge](assets/fluxstate_herobanner.png)
+
 **FluxState Edge** is an extensible, camera-agnostic video analytics SDK designed for integration into enterprise security backends. It processes RTSP streams locally on the edge, extracting behavioral metadata using a combination of object detection, 3D skeletal posing, audio processing, and VLM (Vision-Language Model) semantic reasoning.
+
+---
+
+## 🖼️ Architecture & Use Cases
+
+![Use Cases](assets/fluxstate_usecases.png)
 
 ---
 
